@@ -1,0 +1,124 @@
+@import url('https://fonts.googleapis.com/css2?family=Comfortaa:wght@300&family=Roboto:wght@100&display=swap');
+
+.no-tasks {
+    color: white;
+    font-size: 20px;
+    width: auto;
+    text-align: center;
+    display: flex;
+    justify-content: space-between;
+
+}
+.no-tasks p {
+    margin: auto auto auto 10px;
+}
+
+
+* {
+    padding: 0px;
+    margin: 0px;
+
+}
+
+body {
+    background-color: grey;
+    font-family: "Comfortaa", "Arial", sans-serif;
+
+}
+
+
+.main-container {
+    margin: 10px auto;
+    background-color: black;
+    width: 1000px;
+    padding: 30px;
+    border-radius: 10px;
+
+
+}
+
+h1 {
+    color: white;
+    text-align: center;
+    padding-top: 20px;
+    padding-bottom: 20px;
+
+}
+
+.task-container {
+    margin: 20px auto;
+    padding: 5px 5px;
+    display: flex;
+    justify-content: space-between;
+    width: 1000px;
+    border: 1px solid white;
+    border-radius: 10px;
+    color: white;
+    font-size: 0.8rem;
+    list-style-type: none;
+
+}
+
+.task-name {
+    font-size: 1rem;
+}
+.task-begin, .task-end {
+    font-size: 0.6rem;
+}
+
+
+nav {
+    width: auto;
+    padding-top: 10px;
+
+}
+.navbar {
+    margin: 10px auto;
+
+    padding: 5px 5px;
+    display: flex;
+    justify-content: left;
+    width: 1000px;
+    height: auto;
+    border-radius: 10px;
+    color: white;
+    font-size: 0.8rem;
+    list-style-type: none;
+
+}
+
+li {
+    margin: 10px 0px 10px 0px;
+
+}
+
+.task-title {
+    border: 3px solid #000;
+    color: white;
+
+}
+
+
+.update-button {
+    margin: 10px;
+    padding: 10px 10px;
+    height: fit-content;
+    width: fit-content;
+    border-radius: 10px;
+    background-color: #323240;
+    color: white;
+    text-decoration: none;
+
+}
+
+.update-button:hover {
+    background-color: #575760;
+    color: white;
+    border: 1px solid white;
+}
+
+.delete-button:hover {
+    background-color: #782532;
+    color: white;
+    border: 1px solid white;
+}

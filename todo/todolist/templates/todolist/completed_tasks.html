@@ -1,0 +1,22 @@
+{% extends 'todolist/base.html' %}
+{% block title %} Все завершённые задачи {% endblock title %}
+{% block content %}
+    <h1>Завершённые задачи</h1>
+    <div class="main-container">
+        {% if tasks %}
+            {% for task in tasks %}
+                <ul class="task-container">
+                    <li class="task-name">{{ task.name }}</li>
+                    <li class="task-begin">создана: {{ task.time_begin }}</li>
+                    <li class="task-end">завершена: {{ task.time_end }}</li>
+                    <li>
+                        <a class="update-button" href="/update_task/{{ task.pk }}">Изменить задачу</a>
+                        <a class="update-button delete-button" href="/delete_task/{{ task.pk }}">Удалить задачу</a>
+                    </li>
+                </ul>
+            {% endfor %}
+        {% else %}
+            <div class="no-tasks"><p>Нет завершённых задач</p> <a href="/create_task/" class="update-button">Создать новую задачу</a></div>
+        {% endif %}
+    </div>
+{% endblock content %}
