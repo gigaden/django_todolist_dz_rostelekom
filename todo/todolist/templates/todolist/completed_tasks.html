@@ -11,6 +11,8 @@
                     <li class="task-end">завершена: {{ task.time_end }}</li>
                     <li>
                         <a class="update-button" href="/update_task/{{ task.pk }}">Изменить задачу</a>
+                    </li>
+                    <li>
                         <a class="update-button delete-button" href="/delete_task/{{ task.pk }}">Удалить задачу</a>
                     </li>
                 </ul>
