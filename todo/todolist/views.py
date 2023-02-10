@@ -1,8 +1,9 @@
 from django.contrib.auth.forms import UserCreationForm
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render
 
-from .models import TodoList
+from .models import TodoList, Category
 
 
 class AllTasksView(ListView):
@@ -25,14 +26,14 @@ class CompletedTasksView(ListView):
 
 class TaskCreateView(CreateView):
     model = TodoList
-    fields = ["name"]
+    fields = ["name", "cat"]
     template_name = "todolist/task_create.html"
     success_url = "/"
 
 
 class TaskUpdateView(UpdateView):
     model = TodoList
-    fields = ["name", "is_completed"]
+    fields = ["name", "is_completed", "cat"]
     template_name = "todolist/task_update_form.html"
     success_url = "/"
 
@@ -42,6 +43,28 @@ class TaskDeleteView(DeleteView):
     success_url = "/"
     template_name = "todolist/task_delete.html"
     context_object_name = "task"
+
+
+def categories_show(request):
+    categories = Category.objects.all()
+    context = dict()
+    for i in categories:
+        context[i] = context.get(i, TodoList.objects.filter(cat_id=i.pk).all())
+    return render(request, 'todolist/categories.html', context={'context': context})
+
+
+class CategoryCreateView(CreateView):
+    model = Category
+    fields = ["name"]
+    template_name = "todolist/category_create.html"
+    success_url = "/categories"
+
+
+class CategoryDeleteView(DeleteView):
+    model = Category
+    success_url = "/categories"
+    template_name = "todolist/category_delete.html"
+    context_object_name = "cat"
 
 
 '''class RegisterUser(CreateView):

@@ -1,7 +1,7 @@
 {% extends 'todolist/base.html' %}
-{% block title %} Все задачи {% endblock title %}
+{% block title %} Все задачи  {{ tasks|length }} {% endblock title %}
 {% block content %}
-    <h1>Все задачи</h1>
+    <h1>Все задачи, всего:  {{ tasks|length }}</h1>
     <div class="main-container">
         {% if tasks %}
             {% for task in tasks %}
@@ -15,6 +15,7 @@
                             активна
                         {% endif %}
                     </li>
+                    <li class="task-end">{{ task.cat }}</li>
                     <li>
                         <a class="update-button" href="/update_task/{{ task.pk }}">Изменить задачу</a>
                     </li>

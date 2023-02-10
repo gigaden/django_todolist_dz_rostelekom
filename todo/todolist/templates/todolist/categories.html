@@ -1,0 +1,24 @@
+{% extends 'todolist/base.html' %}
+{% block title %} Категории задач {% endblock title %}
+{% block content %}
+    <h1>Категории задач</h1>
+    <div class="main-container">
+        {% if context %}
+            <li class="task-name"><a href="{% url 'category_create' %}" class="update-button">Создать новую категорию</a></li>>
+            {% for key, values in context.items %}
+                <ul class="task-container">
+                    <li class="task-name">{{ key }}, задач всего: {{ values|length }}</li>
+                    <li class="task-name"><a href="/category_delete/{{ key.id }}" class="update-button delete-button">удалить категорию</a></li>
+                </ul>
+                    <ul class="task-container task-categories">
+                        {% for value in values %}
+                            <li class="task-name"><a href="/update_task/{{ value.pk }}">{{ value.name }}</a></li>
+                        {% endfor %}
+                    </ul>
+
+            {% endfor %}
+        {% else %}
+            <div class="no-tasks"><p>Нет категорий</p> <a href="{% url 'category_create' %}" class="update-button">Создать новую категорию</a></div>
+        {% endif %}
+    </div>
+{% endblock content %}

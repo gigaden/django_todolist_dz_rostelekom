@@ -5,18 +5,19 @@ from django.db import models
 
 # создаём модель таблицы в нашей БД
 class TodoList(models.Model):
-    name = models.CharField(max_length=140, help_text="описание задачи")
+    name = models.CharField(max_length=140, verbose_name="описание задачи")
     time_begin = models.DateTimeField(
-        auto_now_add=True, help_text="время создания задачи"
+        auto_now_add=True, verbose_name="время создания задачи"
     )
     time_end = models.DateTimeField(
         auto_now=False,
         default=False,
-        help_text="время завершения задачи",
+        verbose_name="время завершения задачи",
         blank=True,
         null=True,
     )
-    is_completed = models.BooleanField(default=False, help_text="выполнена ли задача")
+    is_completed = models.BooleanField(default=False, verbose_name="выполнена ли задача")
+    cat = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Категория', default=3)
 
     def save(self, *args, **kwargs):
         if self.is_completed:
@@ -25,3 +26,10 @@ class TodoList(models.Model):
         else:
             self.time_end = None
         return super().save(*args, **kwargs)
+
+
+class Category(models.Model):
+    name = models.CharField(max_length=140, db_index=True, verbose_name="Название категории")
+
+    def __str__(self):
+        return self.name

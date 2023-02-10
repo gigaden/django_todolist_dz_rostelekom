@@ -67,6 +67,28 @@ h1 {
 
 }
 
+.task-categories {
+    justify-content: left;
+
+}
+.task-categories .task-name {
+    margin-left: 10px;
+    font-size: 0.7rem;
+
+}
+
+.task-categories a {
+    color: white;
+    text-decoration: none;
+
+}
+.task-categories a:hover {
+    font-size: 0.8rem;
+    text-decoration: underline;
+    text-transform: uppercase;
+
+}
+
 .task-name {
     font-size: 1rem;
 }

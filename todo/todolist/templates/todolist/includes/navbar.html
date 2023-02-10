@@ -1,6 +1,6 @@
 <ul class="navbar">
   <li>
-    <a class="update-button" href="/">Главная</a>
+    <a class="update-button" href="{% url 'index'%}">Главная</a>
   </li>
   <li>
     <a class="update-button" href="/active_tasks/">Активные задачи</a>
@@ -10,5 +10,8 @@
   </li>
   <li>
     <a href="/create_task/" class="update-button">Создать задачу</a>
+  </li>
+  <li>
+    <a  href="{% url 'categories'%}" class="update-button">Категории</a>
   </li>
 </ul>

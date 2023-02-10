@@ -1,6 +1,6 @@
 import datetime
 from django.contrib import admin
-from .models import TodoList
+from .models import TodoList, Category
 
 
 @admin.action(description="Завершить задачу")
@@ -24,3 +24,11 @@ class TodoListAdmin(admin.ModelAdmin):
     list_filter = ["time_begin", "is_completed", "time_end"]
     search_fields = ["name"]
     actions = [deactivate, activate]
+
+
+@admin.register(Category)
+class TodoListAdmin(admin.ModelAdmin):
+    list_display = ("id", "name")
+
+    list_filter = ["name"]
+    search_fields = ["name"]
