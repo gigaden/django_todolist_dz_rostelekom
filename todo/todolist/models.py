@@ -1,6 +1,7 @@
 import datetime
 
 from django.db import models
+from django.urls import reverse
 
 
 # создаём модель таблицы в нашей БД
@@ -28,8 +29,18 @@ class TodoList(models.Model):
         return super().save(*args, **kwargs)
 
 
+
+
 class Category(models.Model):
     name = models.CharField(max_length=140, db_index=True, verbose_name="Название категории")
 
     def __str__(self):
         return self.name
+
+    def get_absolute_url(self):
+        return reverse('categories')
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+        ordering = ['id']

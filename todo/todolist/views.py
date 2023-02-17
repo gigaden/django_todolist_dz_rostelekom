@@ -1,11 +1,15 @@
-from django.contrib.auth.forms import UserCreationForm
-from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.shortcuts import render
+from rest_framework.schemas.openapi import AutoSchema
 
 from .models import TodoList, Category
 
+from rest_framework import viewsets, mixins
+from .serializers import TodoSerializer, CategoriesSerializer
+from .filters import TodolistFilterSet, CategoryFilterSet
 
+
+# Классы представлений для модели Todolist
 class AllTasksView(ListView):
     context_object_name = "tasks"
     queryset = TodoList.objects.all()
@@ -45,6 +49,7 @@ class TaskDeleteView(DeleteView):
     context_object_name = "task"
 
 
+# отображаем название категорий и какие в них задачи
 def categories_show(request):
     categories = Category.objects.all()
     context = dict()
@@ -53,6 +58,7 @@ def categories_show(request):
     return render(request, 'todolist/categories.html', context={'context': context})
 
 
+# классы представлений для модели Category
 class CategoryCreateView(CreateView):
     model = Category
     fields = ["name"]
@@ -67,12 +73,35 @@ class CategoryDeleteView(DeleteView):
     context_object_name = "cat"
 
 
-'''class RegisterUser(CreateView):
-    form_class = UserCreationForm
-    template_name = 'todolist/register.html'
-    success_url = reverse_lazy('login')
+# добавляем viewset drf для возможности работы по API
+class TodolistViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet
+):
+    queryset = TodoList.objects.all()
+    serializer_class = TodoSerializer
+    filterset_class = TodolistFilterSet
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title='Регистрация')
-        return dict(list(context.items()) + list(c_def.items()))'''
+    # рисуем схему для API
+    schema = AutoSchema(
+        tags=['TodoList Tasks'],
+        component_name='TodoList',
+        operation_id_base='TodoList',
+    )
+
+
+class CategoriesViewSet(
+    mixins.ListModelMixin,
+    mixins.CreateModelMixin,
+    mixins.RetrieveModelMixin,
+    mixins.DestroyModelMixin,
+    mixins.UpdateModelMixin,
+    viewsets.GenericViewSet
+):
+    queryset = Category.objects.all()
+    serializer_class = CategoriesSerializer
+    filterset_class = CategoryFilterSet

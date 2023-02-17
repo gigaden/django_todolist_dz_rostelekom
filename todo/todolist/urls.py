@@ -1,4 +1,6 @@
 from django.urls import path
+
+
 from .views import (
     ActiveTasksView,
     CompletedTasksView,
@@ -21,6 +23,5 @@ urlpatterns = [
     path("categories/", categories_show, name="categories"),
     path("category_create/", CategoryCreateView.as_view(), name="category_create"),
     path("category_delete/<int:pk>", CategoryDeleteView.as_view(), name="category_delete")
-    # path("login/", login, name="login"),
-    # path("register/", RegisterUser.as_view(), name="register"),
 ]
+

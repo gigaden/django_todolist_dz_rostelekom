@@ -22,6 +22,7 @@ class TodoListAdmin(admin.ModelAdmin):
     list_display = ("id", "name", "time_begin", "time_end", "is_completed")
 
     list_filter = ["time_begin", "is_completed", "time_end"]
+    list_editable = ('is_completed',)
     search_fields = ["name"]
     actions = [deactivate, activate]
 

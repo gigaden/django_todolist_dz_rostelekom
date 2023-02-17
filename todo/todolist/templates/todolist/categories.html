@@ -4,9 +4,9 @@
     <h1>Категории задач</h1>
     <div class="main-container">
         {% if context %}
-            <li class="task-name"><a href="{% url 'category_create' %}" class="update-button">Создать новую категорию</a></li>>
+            <p class="task-name"><a href="{% url 'category_create' %}" class="update-button">Создать новую категорию</a></p>>
             {% for key, values in context.items %}
-                <ul class="task-container">
+                <ul class="task-container cat-container">
                     <li class="task-name">{{ key }}, задач всего: {{ values|length }}</li>
                     <li class="task-name"><a href="/category_delete/{{ key.id }}" class="update-button delete-button">удалить категорию</a></li>
                 </ul>

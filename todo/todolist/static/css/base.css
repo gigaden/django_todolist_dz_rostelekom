@@ -67,13 +67,25 @@ h1 {
 
 }
 
+.cat-container {
+    border-bottom: none;
+
+}
+
 .task-categories {
     justify-content: left;
+    display: flex;
+    flex-direction: column;
 
 }
 .task-categories .task-name {
     margin-left: 10px;
     font-size: 0.7rem;
+
+}
+
+.task-categories {
+    border: none;
 
 }
 
