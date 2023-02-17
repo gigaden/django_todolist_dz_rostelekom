@@ -17,6 +17,7 @@ class TodolistFilterSet(dj_filters.FilterSet):
             "is_completed",
         ]
 
+
 class CategoryFilterSet(dj_filters.FilterSet):
     """Набор фильров для представления для модели категорий."""
 
@@ -29,4 +30,3 @@ class CategoryFilterSet(dj_filters.FilterSet):
         fields = [
             "name",
         ]
-

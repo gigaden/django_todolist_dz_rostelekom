@@ -55,7 +55,7 @@ def categories_show(request):
     context = dict()
     for i in categories:
         context[i] = context.get(i, TodoList.objects.filter(cat_id=i.pk).all())
-    return render(request, 'todolist/categories.html', context={'context': context})
+    return render(request, "todolist/categories.html", context={"context": context})
 
 
 # классы представлений для модели Category
@@ -80,7 +80,7 @@ class TodolistViewSet(
     mixins.RetrieveModelMixin,
     mixins.DestroyModelMixin,
     mixins.UpdateModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     queryset = TodoList.objects.all()
     serializer_class = TodoSerializer
@@ -88,9 +88,9 @@ class TodolistViewSet(
 
     # рисуем схему для API
     schema = AutoSchema(
-        tags=['TodoList Tasks'],
-        component_name='TodoList',
-        operation_id_base='TodoList',
+        tags=["TodoList Tasks"],
+        component_name="TodoList",
+        operation_id_base="TodoList",
     )
 
 
@@ -100,7 +100,7 @@ class CategoriesViewSet(
     mixins.RetrieveModelMixin,
     mixins.DestroyModelMixin,
     mixins.UpdateModelMixin,
-    viewsets.GenericViewSet
+    viewsets.GenericViewSet,
 ):
     queryset = Category.objects.all()
     serializer_class = CategoriesSerializer

@@ -17,8 +17,12 @@ class TodoList(models.Model):
         blank=True,
         null=True,
     )
-    is_completed = models.BooleanField(default=False, verbose_name="выполнена ли задача")
-    cat = models.ForeignKey('Category', on_delete=models.PROTECT, verbose_name='Категория', default=3)
+    is_completed = models.BooleanField(
+        default=False, verbose_name="выполнена ли задача"
+    )
+    cat = models.ForeignKey(
+        "Category", on_delete=models.PROTECT, verbose_name="Категория", default=3
+    )
 
     def save(self, *args, **kwargs):
         if self.is_completed:
@@ -29,18 +33,18 @@ class TodoList(models.Model):
         return super().save(*args, **kwargs)
 
 
-
-
 class Category(models.Model):
-    name = models.CharField(max_length=140, db_index=True, verbose_name="Название категории")
+    name = models.CharField(
+        max_length=140, db_index=True, verbose_name="Название категории"
+    )
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse('categories')
+        return reverse("categories")
 
     class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
-        ordering = ['id']
+        verbose_name = "Категория"
+        verbose_name_plural = "Категории"
+        ordering = ["id"]

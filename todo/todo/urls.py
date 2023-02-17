@@ -6,9 +6,11 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("", include("todolist.urls")),
     path("api/", include("todolist.api_urls")),
-    path('openapi/', get_schema_view(
-        title="Studying",
-        description="API for all things …",
-        version="1.0.0"
-    ), name='openapi-schema'),
+    path(
+        "openapi/",
+        get_schema_view(
+            title="Studying", description="API for all things …", version="1.0.0"
+        ),
+        name="openapi-schema",
+    ),
 ]

@@ -22,6 +22,7 @@ urlpatterns = [
     path("delete_task/<int:pk>", TaskDeleteView.as_view(), name="task_delete"),
     path("categories/", categories_show, name="categories"),
     path("category_create/", CategoryCreateView.as_view(), name="category_create"),
-    path("category_delete/<int:pk>", CategoryDeleteView.as_view(), name="category_delete")
+    path(
+        "category_delete/<int:pk>", CategoryDeleteView.as_view(), name="category_delete"
+    ),
 ]
-

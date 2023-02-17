@@ -4,7 +4,6 @@ from collections import OrderedDict
 from rest_framework.response import Response
 
 
-
 class BasePageNumberPagination(PageNumberPagination):
     """Pagination class"""
 
@@ -19,15 +18,18 @@ class BaseLimitOffsetPagination(LimitOffsetPagination):
     """Pagination class."""
 
     # default_limit = api_settings.PAGE_SIZE
-    limit_query_param = 'limit'
-    offset_query_param = 'offset'
+    limit_query_param = "limit"
+    offset_query_param = "offset"
     max_limit = None
 
-
     def get_paginated_response(self, data):
-        return Response(OrderedDict([
-            ('count', self.count),
-            ('next', self.get_next_link()),
-            ('previous', self.get_previous_link()),
-            ('results', data)
-        ]))
+        return Response(
+            OrderedDict(
+                [
+                    ("count", self.count),
+                    ("next", self.get_next_link()),
+                    ("previous", self.get_previous_link()),
+                    ("results", data),
+                ]
+            )
+        )
