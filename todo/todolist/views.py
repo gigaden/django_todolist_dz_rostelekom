@@ -1,7 +1,15 @@
+from django.contrib.auth import logout, login
+from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.views import LoginView
+from django.core.paginator import Paginator
+from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from rest_framework.schemas.openapi import AutoSchema
 
+from django.contrib.auth.mixins import LoginRequiredMixin
+
+from .forms import RegisterUserForm, LoginUserForm
 from .models import TodoList, Category
 
 from rest_framework import viewsets, mixins
@@ -14,6 +22,7 @@ class AllTasksView(ListView):
     context_object_name = "tasks"
     queryset = TodoList.objects.all()
     template_name = "todolist/index.html"
+    paginate_by = 3
 
 
 class ActiveTasksView(ListView):
@@ -28,11 +37,12 @@ class CompletedTasksView(ListView):
     template_name = "todolist/completed_tasks.html"
 
 
-class TaskCreateView(CreateView):
+class TaskCreateView(LoginRequiredMixin, CreateView):
     model = TodoList
     fields = ["name", "cat"]
     template_name = "todolist/task_create.html"
     success_url = "/"
+    login_url = reverse_lazy('index')
 
 
 class TaskUpdateView(UpdateView):
@@ -52,10 +62,13 @@ class TaskDeleteView(DeleteView):
 # отображаем название категорий и какие в них задачи
 def categories_show(request):
     categories = Category.objects.all()
+    paginator = Paginator(categories, 2)
+    page_number = request.GET.get('page')
+    page_obj = paginator.get_page(page_number)
     context = dict()
-    for i in categories:
+    for i in page_obj:
         context[i] = context.get(i, TodoList.objects.filter(cat_id=i.pk).all())
-    return render(request, "todolist/categories.html", context={"context": context})
+    return render(request, "todolist/categories.html", context={"page_obj": page_obj, "context": context})
 
 
 # классы представлений для модели Category
@@ -105,3 +118,32 @@ class CategoriesViewSet(
     queryset = Category.objects.all()
     serializer_class = CategoriesSerializer
     filterset_class = CategoryFilterSet
+
+
+# Добавляем регистрацию и авторизацию
+class RegisterUser(CreateView):
+    form_class = RegisterUserForm
+    template_name = "todolist/register.html"
+    success_url = reverse_lazy('index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
+
+    def form_valid(self, form):
+        user = form.save()
+        login(self.request, user)
+        return redirect('index')
+
+
+class LoginUser(LoginView):
+    form_class = LoginUserForm
+    template_name = 'todolist/login.html'
+
+    def get_success_url(self):
+        return reverse_lazy('index')
+
+
+def logout_user(request):
+    logout(request)
+    return redirect('login')

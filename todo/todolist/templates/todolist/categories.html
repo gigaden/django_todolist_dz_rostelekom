@@ -20,5 +20,18 @@
         {% else %}
             <div class="no-tasks"><p>Нет категорий</p> <a href="{% url 'category_create' %}" class="update-button">Создать новую категорию</a></div>
         {% endif %}
+        <nav class="pagination">
+            <ul>
+                {% for p in page_obj.paginator.page_range %}
+                {% if page_obj.number == p %}
+                <li>{{ p }}</li>
+                {% else %}
+                <li>
+                    <a href="?page={{ p }}">{{ p }}</a>
+                </li>
+                {% endif %}
+                {% endfor %}
+            </ul>
+        </nav>
     </div>
 {% endblock content %}

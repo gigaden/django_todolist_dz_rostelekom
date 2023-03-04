@@ -8,10 +8,24 @@
   <li>
     <a class="update-button" href="/completed_tasks/">Завершённые задачи</a>
   </li>
+  {% if user.is_authenticated %}
   <li>
     <a href="/create_task/" class="update-button">Создать задачу</a>
   </li>
+  {% endif %}
   <li>
     <a  href="{% url 'categories'%}" class="update-button">Категории</a>
   </li>
+  {% if request.user.is_authenticated %}
+  <li>
+    Привет, {{ user.username }}! | <a class="update-button" href="{% url 'logout' %}">Выйти</a>
+  </li>
+  {% else %}
+  <li>
+    <a class="update-button" href="{% url 'register' %}">Регистрация</a> |
+  </li>
+  <li>
+    <a class="update-button" href="{% url 'login' %}">Войти</a>
+  </li>
+  {% endif %}
 </ul>

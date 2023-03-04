@@ -11,6 +11,8 @@ from .views import (
     categories_show,
     CategoryCreateView,
     CategoryDeleteView,
+    RegisterUser,
+    LoginUser, logout_user,
 )
 
 urlpatterns = [
@@ -25,4 +27,7 @@ urlpatterns = [
     path(
         "category_delete/<int:pk>", CategoryDeleteView.as_view(), name="category_delete"
     ),
+    path("login/",LoginUser.as_view(), name="login"),
+    path("register/", RegisterUser.as_view(), name="register"),
+    path("logout/", logout_user, name="logout"),
 ]

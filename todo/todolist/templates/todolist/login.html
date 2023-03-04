@@ -1,0 +1,21 @@
+
+{% extends 'todolist/base.html' %}
+{% load static %}
+{% block title %} Авторизация {% endblock title %}
+{% block css_link %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/create_form.css' %}" />
+{% endblock css_link %}
+{% block content %}
+    <h1>Авторизация</h1>
+    <div class="form-div">
+    <form method="post">
+        {% csrf_token %}
+        {% for f in form %}
+        <p><label class="form-label" for="{{ f.id_for_label }}">{{ f.label }}: </label>{{ f }}</p>
+        <div class="form-error">{{ f.errors }}</div>
+        {% endfor %}
+        <input type="submit" value="Авторизоваться" class="update-button">
+
+    </form>
+    </div>
+{% endblock content %}
