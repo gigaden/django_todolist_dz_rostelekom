@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Активные задачи</h1>
     <div class="main-container">
-        {% if tasks %}
+        {% if tasks and user.is_authenticated %}
             {% for task in tasks %}
                 <ul class="task-container">
                     <li class="task-name">{{ task.name }}</li>
@@ -16,6 +16,8 @@
                     </li>
                 </ul>
             {% endfor %}
+        {% elif not user.is_authenticated%}
+        <div class="no-tasks"><p>Вы не вошли в систему</p> <a class="update-button" href="{% url 'login' %}">Войти</a></div>
         {% else %}
             <div class="no-tasks"><p>Нет активных задач</p> <a href="/create_task/" class="update-button">Создать задачу</a></div>
         {% endif %}

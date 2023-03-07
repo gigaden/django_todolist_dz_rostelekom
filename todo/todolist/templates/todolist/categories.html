@@ -3,7 +3,7 @@
 {% block content %}
     <h1>Категории задач</h1>
     <div class="main-container">
-        {% if context %}
+        {% if context  and user.is_authenticated%}
             <p class="task-name"><a href="{% url 'category_create' %}" class="update-button">Создать новую категорию</a></p>>
             {% for key, values in context.items %}
                 <ul class="task-container cat-container">
@@ -17,9 +17,12 @@
                     </ul>
 
             {% endfor %}
+        {% elif not user.is_authenticated%}
+        <div class="no-tasks"><p>Вы не вошли в систему</p> <a class="update-button" href="{% url 'login' %}">Войти</a></div>
         {% else %}
             <div class="no-tasks"><p>Нет категорий</p> <a href="{% url 'category_create' %}" class="update-button">Создать новую категорию</a></div>
         {% endif %}
+        {% if user.is_authenticated %}
         <nav class="pagination">
             <ul>
                 {% for p in page_obj.paginator.page_range %}
@@ -33,5 +36,6 @@
                 {% endfor %}
             </ul>
         </nav>
+        {% endif %}
     </div>
 {% endblock content %}

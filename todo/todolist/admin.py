@@ -19,9 +19,9 @@ def deactivate(modeladmin, request, queryset):
 
 @admin.register(TodoList)
 class TodoListAdmin(admin.ModelAdmin):
-    list_display = ("id", "name", "time_begin", "time_end", "is_completed")
+    list_display = ("id", "name", "time_begin", "time_end", "author", "is_completed")
 
-    list_filter = ["time_begin", "is_completed", "time_end"]
+    list_filter = ["time_begin", "is_completed", "time_end", "author"]
     list_editable = ("is_completed",)
     search_fields = ["name"]
     actions = [deactivate, activate]
@@ -29,7 +29,7 @@ class TodoListAdmin(admin.ModelAdmin):
 
 @admin.register(Category)
 class TodoListAdmin(admin.ModelAdmin):
-    list_display = ("id", "name")
+    list_display = ("id", "name", "author")
 
     list_filter = ["name"]
     search_fields = ["name"]

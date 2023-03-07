@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "todolist.apps.TodolistConfig",
     "rest_framework",
     "django_filters",
+    'django_dbml',
 ]
 
 MIDDLEWARE = [

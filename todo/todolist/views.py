@@ -20,21 +20,37 @@ from .filters import TodolistFilterSet, CategoryFilterSet
 # Классы представлений для модели Todolist
 class AllTasksView(ListView):
     context_object_name = "tasks"
-    queryset = TodoList.objects.all()
+    # queryset = TodoList.objects.all()
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return TodoList.objects.filter(author=self.request.user)
+        else:
+            return TodoList.objects.all()
+
     template_name = "todolist/index.html"
     paginate_by = 3
 
 
 class ActiveTasksView(ListView):
     context_object_name = "tasks"
-    queryset = TodoList.objects.filter(is_completed=False)
+    # queryset = TodoList.objects.filter(is_completed=False)
     template_name = "todolist/active_tasks.html"
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return TodoList.objects.filter(author=self.request.user).filter(is_completed=False)
+        else:
+            return TodoList.objects.all()
 
 
 class CompletedTasksView(ListView):
-    queryset = TodoList.objects.filter(is_completed=True)
+    # queryset = TodoList.objects.filter(is_completed=True)
     context_object_name = "tasks"
     template_name = "todolist/completed_tasks.html"
+    def get_queryset(self):
+        if self.request.user.is_authenticated:
+            return TodoList.objects.filter(author=self.request.user).filter(is_completed=True)
+        else:
+            return TodoList.objects.all()
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
@@ -44,10 +60,16 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
     success_url = "/"
     login_url = reverse_lazy('index')
 
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
+
 
 class TaskUpdateView(UpdateView):
     model = TodoList
     fields = ["name", "is_completed", "cat"]
+
     template_name = "todolist/task_update_form.html"
     success_url = "/"
 
@@ -61,7 +83,11 @@ class TaskDeleteView(DeleteView):
 
 # отображаем название категорий и какие в них задачи
 def categories_show(request):
-    categories = Category.objects.all()
+    # categories = Category.objects.all()
+    if request.user.is_authenticated:
+        categories = Category.objects.filter(author=request.user)
+    else:
+        categories = Category.objects.all()
     paginator = Paginator(categories, 2)
     page_number = request.GET.get('page')
     page_obj = paginator.get_page(page_number)
@@ -77,6 +103,10 @@ class CategoryCreateView(CreateView):
     fields = ["name"]
     template_name = "todolist/category_create.html"
     success_url = "/categories"
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
 
 
 class CategoryDeleteView(DeleteView):
@@ -133,6 +163,7 @@ class RegisterUser(CreateView):
     def form_valid(self, form):
         user = form.save()
         login(self.request, user)
+        Category(name='разное', author=self.request.user).save()
         return redirect('index')
 
 
