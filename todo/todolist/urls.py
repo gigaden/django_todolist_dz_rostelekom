@@ -4,7 +4,6 @@ from django.urls import path
 from .views import (
     ActiveTasksView,
     CompletedTasksView,
-    TaskCreateView,
     TaskUpdateView,
     TaskDeleteView,
     AllTasksView,
@@ -13,6 +12,7 @@ from .views import (
     CategoryDeleteView,
     RegisterUser,
     LoginUser, logout_user,
+    TaskCreateView
 )
 
 urlpatterns = [

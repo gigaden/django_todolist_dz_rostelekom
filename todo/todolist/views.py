@@ -1,5 +1,4 @@
 from django.contrib.auth import logout, login
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.views import LoginView
 from django.core.paginator import Paginator
 from django.urls import reverse_lazy
@@ -9,7 +8,7 @@ from rest_framework.schemas.openapi import AutoSchema
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 
-from .forms import RegisterUserForm, LoginUserForm
+from .forms import RegisterUserForm, LoginUserForm, TaskCreateForm, TaskUpdateForm
 from .models import TodoList, Category
 
 from rest_framework import viewsets, mixins
@@ -20,6 +19,7 @@ from .filters import TodolistFilterSet, CategoryFilterSet
 # Классы представлений для модели Todolist
 class AllTasksView(ListView):
     context_object_name = "tasks"
+
     # queryset = TodoList.objects.all()
     def get_queryset(self):
         if self.request.user.is_authenticated:
@@ -35,6 +35,7 @@ class ActiveTasksView(ListView):
     context_object_name = "tasks"
     # queryset = TodoList.objects.filter(is_completed=False)
     template_name = "todolist/active_tasks.html"
+
     def get_queryset(self):
         if self.request.user.is_authenticated:
             return TodoList.objects.filter(author=self.request.user).filter(is_completed=False)
@@ -46,6 +47,7 @@ class CompletedTasksView(ListView):
     # queryset = TodoList.objects.filter(is_completed=True)
     context_object_name = "tasks"
     template_name = "todolist/completed_tasks.html"
+
     def get_queryset(self):
         if self.request.user.is_authenticated:
             return TodoList.objects.filter(author=self.request.user).filter(is_completed=True)
@@ -54,8 +56,9 @@ class CompletedTasksView(ListView):
 
 
 class TaskCreateView(LoginRequiredMixin, CreateView):
+    form_class = TaskCreateForm
     model = TodoList
-    fields = ["name", "cat"]
+    # fields = ["name", "cat"]
     template_name = "todolist/task_create.html"
     success_url = "/"
     login_url = reverse_lazy('index')
@@ -64,14 +67,24 @@ class TaskCreateView(LoginRequiredMixin, CreateView):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class TaskUpdateView(UpdateView):
     model = TodoList
-    fields = ["name", "is_completed", "cat"]
+    # fields = ["name", "is_completed", "cat"]
+    form_class = TaskUpdateForm
 
     template_name = "todolist/task_update_form.html"
     success_url = "/"
+
+    def get_form_kwargs(self):
+        kwargs = super().get_form_kwargs()
+        kwargs['user'] = self.request.user
+        return kwargs
 
 
 class TaskDeleteView(DeleteView):
